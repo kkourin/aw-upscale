@@ -200,8 +200,7 @@ args = magick.copy()
 # yapf: disable
 args.extend([
     src,
-    '-interpolate', 'Nearest',
-    '-filter', 'point',
+    '-filter', 'Lanczos',
     '-resize', f'{scale * 100}%',
     dst
 ])

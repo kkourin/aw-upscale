@@ -103,7 +103,7 @@ impl Display for UpscaleError {
 
 impl Error for UpscaleError {}
 
-const DEFAULT_UPSCALER: &[u8] = include_bytes!("../waifu2x-upscale.py");
+const DEFAULT_UPSCALER: &[u8] = include_bytes!("../fastscale.py");
 
 impl Upscaler {
     /// Create a new upscaler using the given executable. If none, will use an embedded python
