@@ -7,7 +7,7 @@ use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
 use std::str::from_utf8;
 use std::time::Duration;
-
+use std::sync::LazyLock;
 use derive_more::From;
 use process_control::{ChildExt, Control, Output};
 
@@ -75,6 +75,13 @@ mod tostr {
     }
 }
 
+static PYTHON_BIN: LazyLock<String> = LazyLock::new(|| {
+    if Command::new("python3").arg("--version").output().is_ok() {
+        "python3".to_string()
+    } else {
+        "python".to_string()
+    }
+});
 
 impl std::fmt::Debug for UpscaleError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -195,7 +202,7 @@ impl Upscaler {
         let mut cmd = if let Some(exe) = &self.executable {
             Command::new(exe)
         } else {
-            let mut cmd = Command::new("python");
+            let mut cmd = Command::new(&*PYTHON_BIN);
             cmd.arg("-").stdin(Stdio::piped());
             cmd
         };
